@@ -1,26 +1,24 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Exhibition Entry Form</title>
-</head>
-<body>
-    <h1>Exhibition Entry</h1>
-    <form method="POST">
-        <label>Class:</label><br>
-        <input type="text" name="class"><br><br>
+from flask import Flask, render_template, request, redirect, url_for
 
-        <label>Team Name:</label><br>
-        <input type="text" name="team"><br><br>
+app = Flask(__name__)
 
-        <label>Members (comma-separated):</label><br>
-        <input type="text" name="members"><br><br>
+# Home page - form
+@app.route("/", methods=["GET", "POST"])
+def index():
+    if request.method == "POST":
+        name = request.form["name"]
+        class_name = request.form["class"]
+        team = request.form["team"]
+        project = request.form["project"]
 
-        <label>Location:</label><br>
-        <input type="text" name="location"><br><br>
+        # For now, just show data on success page
+        return render_template("success.html", name=name, class_name=class_name, team=team, project=project)
+    return render_template("index.html")
 
-        <button type="submit">Submit</button>
-    </form>
+# Success page
+@app.route("/success")
+def success():
+    return render_template("success.html")
 
-    <p>{{ message }}</p>
-</body>
-</html>
+if __name__ == "__main__":
+    app.run(debug=True)
